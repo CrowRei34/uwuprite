@@ -27,7 +27,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev libxrandr-dev
+          sudo apt-get install -y cmake ninja-build libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev libxrandr-dev fuse libfuse2
 
       - name: Descargar Skia precompilado
         run: |
@@ -53,13 +53,36 @@ jobs:
           cd build
           ninja aseprite
 
-      - name: Preparar artefacto compilado
+      - name: Empaquetar como AppImage
         run: |
+          mkdir -p AppDir/usr/bin
+          cp -r build/bin/* AppDir/usr/bin/
+          
+          # Descargar linuxdeploy
+          wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+          chmod +x linuxdeploy-x86_64.AppImage
+          
+          # Preparar metadatos
+          cat <<EOF > AppDir/aseprite.desktop
+          [Desktop Entry]
+          Name=Aseprite
+          Exec=aseprite %U
+          Icon=aseprite
+          Type=Application
+          Categories=Graphics;
+          EOF
+          cp data/icons/aseprite_256.png AppDir/aseprite.png || touch AppDir/aseprite.png
+          
+          # Generar AppImage usando appimagetool y linuxdeploy
+          # Usamos --appimage-extract por si falla FUSE en el runner de GitHub
+          ./linuxdeploy-x86_64.AppImage --appimage-extract
+          OUTPUT=Aseprite-Linux.AppImage ./squashfs-root/AppRun --appdir AppDir -d AppDir/aseprite.desktop -i AppDir/aseprite.png --output appimage
+          
           mkdir -p dist
-          cp -r build/bin/* dist/
+          mv Aseprite-Linux.AppImage dist/
 
-      - name: Subir artefacto
+      - name: Subir artefacto AppImage
         uses: actions/upload-artifact@v4
         with:
-          name: Aseprite-Linux
+          name: Aseprite-AppImage
           path: dist/
