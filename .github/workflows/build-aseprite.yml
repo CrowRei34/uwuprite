@@ -1,5 +1,8 @@
 name: Build Aseprite
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ "main", "master" ]
@@ -86,3 +89,12 @@ jobs:
         with:
           name: Aseprite-AppImage
           path: dist/
+
+      - name: Publicar en GitHub Releases
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        with:
+          tag_name: continuous
+          name: Última compilación (AppImage)
+          files: dist/Aseprite-Linux.AppImage
+          prerelease: false
