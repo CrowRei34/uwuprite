@@ -1,0 +1,87 @@
+name: Build Aseprite
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Aseprite (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            skia-url: https://github.com/aseprite/skia/releases/download/m102-861e474326/Skia-Linux-Release-x64-libstdc++.zip
+            skia-lib: libskia.a
+            artifact-name: Aseprite-Linux
+
+          - os: windows-latest
+            skia-url: https://github.com/aseprite/skia/releases/download/m102-861e474326/Skia-Windows-Release-x64.zip
+            skia-lib: skia.lib
+            artifact-name: Aseprite-Windows
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Aseprite con submódulos
+        uses: actions/checkout@v4
+        with:
+          repository: aseprite/aseprite
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Instalar dependencias (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev
+
+      - name: Configurar Ninja y MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Instalar Ninja (Windows)
+        if: runner.os == 'Windows'
+        uses: llvm/actions/install-ninja@v1
+
+      - name: Descargar Skia precompilado
+        run: |
+          mkdir -p skia
+          curl -L -o skia.zip ${{ matrix.skia-url }}
+          unzip -q skia.zip -d skia
+
+      - name: Configurar CMake
+        run: |
+          mkdir build
+          cd build
+          cmake .. \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_UI=ON \
+            -DLAF_BACKEND=skia \
+            -DSKIA_DIR=$(pwd)/../skia \
+            -DSKIA_LIBRARY_DIR=$(pwd)/../skia/out/Release-x64 \
+            -DSKIA_LIBRARY=$(pwd)/../skia/out/Release-x64/${{ matrix.skia-lib }}
+
+      - name: Compilar Aseprite
+        run: |
+          cd build
+          ninja aseprite
+
+      - name: Preparar artefacto compilado
+        run: |
+          mkdir -p dist
+          cp -r build/bin/* dist/
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: dist/
