@@ -49,7 +49,7 @@ jobs:
 
       - name: Instalar Ninja (Windows)
         if: runner.os == 'Windows'
-        uses: llvm/actions/install-ninja@v1
+        run: choco install ninja
 
       - name: Descargar Skia precompilado
         run: |
