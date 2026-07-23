@@ -9,21 +9,8 @@ on:
 
 jobs:
   build:
-    name: Build Aseprite (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            skia-url: https://github.com/aseprite/skia/releases/download/m102-861e474326/Skia-Linux-Release-x64-libstdc++.zip
-            skia-lib: libskia.a
-            artifact-name: Aseprite-Linux
-
-          - os: windows-latest
-            skia-url: https://github.com/aseprite/skia/releases/download/m102-861e474326/Skia-Windows-Release-x64.zip
-            skia-lib: skia.lib
-            artifact-name: Aseprite-Windows
+    name: Build Aseprite (Linux)
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -37,24 +24,15 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Instalar dependencias (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Instalar dependencias
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev
 
-      - name: Configurar Ninja y MSVC (Windows)
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Instalar Ninja (Windows)
-        if: runner.os == 'Windows'
-        run: choco install ninja
-
       - name: Descargar Skia precompilado
         run: |
           mkdir -p skia
-          curl -L -o skia.zip ${{ matrix.skia-url }}
+          curl -L -o skia.zip https://github.com/aseprite/skia/releases/download/m124-08a5439a6b/Skia-Linux-Release-x64.zip
           unzip -q skia.zip -d skia
 
       - name: Configurar CMake
@@ -68,7 +46,7 @@ jobs:
             -DLAF_BACKEND=skia \
             -DSKIA_DIR=$(pwd)/../skia \
             -DSKIA_LIBRARY_DIR=$(pwd)/../skia/out/Release-x64 \
-            -DSKIA_LIBRARY=$(pwd)/../skia/out/Release-x64/${{ matrix.skia-lib }}
+            -DSKIA_LIBRARY=$(pwd)/../skia/out/Release-x64/libskia.a
 
       - name: Compilar Aseprite
         run: |
@@ -83,5 +61,5 @@ jobs:
       - name: Subir artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
+          name: Aseprite-Linux
           path: dist/
