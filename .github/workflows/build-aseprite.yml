@@ -71,7 +71,7 @@ jobs:
           Type=Application
           Categories=Graphics;
           EOF
-          cp data/icons/aseprite_256.png AppDir/aseprite.png || touch AppDir/aseprite.png
+          cp data/icons/ase256.png AppDir/aseprite.png
           
           # Generar AppImage usando appimagetool y linuxdeploy
           # Usamos --appimage-extract por si falla FUSE en el runner de GitHub
