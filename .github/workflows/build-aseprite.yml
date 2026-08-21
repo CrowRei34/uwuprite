@@ -8,6 +8,9 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
+  schedule:
+    # Rebuild weekly so the continuous release tracks upstream Aseprite.
+    - cron: "17 4 * * 1"
   workflow_dispatch:
 
 jobs:
@@ -92,7 +95,7 @@ jobs:
 
       - name: Publicar en GitHub Releases
         uses: softprops/action-gh-release@v2
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'))
         with:
           tag_name: continuous
           name: Última compilación (AppImage)

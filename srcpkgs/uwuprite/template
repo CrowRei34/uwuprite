@@ -1,0 +1,24 @@
+# Template for the AppImage published by the uwuprite GitHub Actions workflow.
+pkgname=uwuprite
+version=1.0.0
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+short_desc="Aseprite pixel-art editor (continuous AppImage build)"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="custom:Aseprite EULA"
+homepage="https://github.com/CrowRei34/uwuprite"
+distfiles="https://github.com/CrowRei34/uwuprite/releases/download/continuous/Aseprite-Linux.AppImage"
+checksum=SKIP
+skip_extraction="Aseprite-Linux.AppImage"
+
+do_install() {
+	install -Dm755 Aseprite-Linux.AppImage \
+		${DESTDIR}/usr/libexec/uwuprite/uwuprite
+
+	cat > uwuprite << 'EOF'
+#!/bin/sh
+exec /usr/libexec/uwuprite/uwuprite "$@"
+EOF
+	install -Dm755 uwuprite ${DESTDIR}/usr/bin/uwuprite
+}
