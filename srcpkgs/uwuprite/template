@@ -20,6 +20,7 @@ checksum=d56fbb58584aae71315094291d9346ae891f8707f87da30767e847beb1966ba8
 
 do_install() {
 	vbin bin/uwuprite
+	vcopy bin/data usr/bin
 	vlicense share/licenses/uwuprite/EULA.txt
 	vinstall share/applications/uwuprite.desktop 644 usr/share/applications
 	vinstall share/icons/hicolor/256x256/apps/uwuprite.png 644 usr/share/icons/hicolor/256x256/apps

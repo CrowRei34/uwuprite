@@ -78,6 +78,7 @@ jobs:
             dist
 
           install -Dm755 build/bin/aseprite package/usr/bin/uwuprite
+          cp -a build/bin/data package/usr/bin/
           sed 's/^Exec=aseprite/Exec=uwuprite/' \
             src/desktop/linux/aseprite.desktop \
             > package/usr/share/applications/uwuprite.desktop
