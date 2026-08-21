@@ -40,7 +40,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev libxrandr-dev fuse libfuse2
+          sudo apt-get install -y cmake ninja-build desktop-file-utils libx11-dev libxcursor-dev libxi-dev libgl1-mesa-dev libfontconfig1-dev libxrandr-dev fuse libfuse2
 
       - name: Descargar Skia precompilado
         run: |
@@ -79,9 +79,13 @@ jobs:
 
           install -Dm755 build/bin/aseprite package/usr/bin/uwuprite
           cp -a build/bin/data package/usr/bin/
-          sed 's/^Exec=aseprite/Exec=uwuprite/' \
+          sed -e 's/^Exec=aseprite/Exec=uwuprite/' \
+            -e 's/^TryExec=aseprite/TryExec=uwuprite/' \
+            -e 's/^Icon=aseprite/Icon=uwuprite/' \
+            -e 's/^StartupWMClass=Aseprite/StartupWMClass=uwuprite/' \
             src/desktop/linux/aseprite.desktop \
             > package/usr/share/applications/uwuprite.desktop
+          desktop-file-validate package/usr/share/applications/uwuprite.desktop
           install -Dm644 data/icons/ase256.png \
             package/usr/share/icons/hicolor/256x256/apps/uwuprite.png
           install -Dm644 EULA.txt package/usr/share/licenses/uwuprite/EULA.txt
