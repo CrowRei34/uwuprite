@@ -1,8 +1,9 @@
 # Template file for 'uwuprite'
 
 pkgname=uwuprite
+<<<<<<< HEAD
 version=2026.08.21.13
-revision=1
+revision=2
 
 archs="x86_64"
 restricted="Aseprite EULA does not allow redistribution"
@@ -19,8 +20,8 @@ distfiles="https://github.com/CrowRei34/uwuprite/releases/download/continuous/uw
 checksum=d56fbb58584aae71315094291d9346ae891f8707f87da30767e847beb1966ba8
 
 do_install() {
-	vbin usr/bin/uwuprite
-	vlicense usr/share/licenses/uwuprite/EULA.txt
-	vinstall usr/share/applications/uwuprite.desktop 644 usr/share/applications
-	vinstall usr/share/icons/hicolor/256x256/apps/uwuprite.png 644 usr/share/icons/hicolor/256x256/apps
+	vbin bin/uwuprite
+	vlicense share/licenses/uwuprite/EULA.txt
+	vinstall share/applications/uwuprite.desktop 644 usr/share/applications
+	vinstall share/icons/hicolor/256x256/apps/uwuprite.png 644 usr/share/icons/hicolor/256x256/apps
 }
