@@ -9,9 +9,8 @@ restricted="Aseprite EULA does not allow redistribution"
 
 hostmakedepends="clang cmake ninja unzip pkg-config"
 makedepends="libX11-devel libXcursor-devel libXi-devel libXrandr-devel
- mesa-libGL-devel fontconfig-devel"
-depends="libX11 libXcursor libXi libXrandr libGL fontconfig
- hicolor-icon-theme desktop-file-utils"
+ MesaLib-devel fontconfig-devel"
+depends="hicolor-icon-theme desktop-file-utils"
 
 short_desc="Aseprite pixel-art editor compiled from source"
 maintainer="Orphaned <orphan@voidlinux.org>"
