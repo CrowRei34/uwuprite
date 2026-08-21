@@ -9,7 +9,7 @@ maintainer="Orphaned <orphan@voidlinux.org>"
 license="custom:Aseprite EULA"
 homepage="https://github.com/CrowRei34/uwuprite"
 distfiles="https://github.com/CrowRei34/uwuprite/releases/download/continuous/Aseprite-Linux.AppImage"
-checksum=SKIP
+checksum=7b557ec081314afd896f71359befbc2e951cc5e717ed51ecf98ae551a7a8d61c
 skip_extraction="Aseprite-Linux.AppImage"
 
 do_install() {
