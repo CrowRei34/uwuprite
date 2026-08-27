@@ -1,9 +1,3 @@
 # uwuprite
 
-Repositorio para la compilación automatizada de Aseprite mediante GitHub Actions.
-
-## Flujo de Trabajo (GitHub Actions)
-Este repositorio cuenta con una acción configurada en `.github/workflows/build-aseprite.yml` que compila Aseprite automáticamente para **Windows** y **Linux**.
-
-### Artefactos Generados
-Los ejecutable(s) compilados están disponibles en la pestaña **Actions** de GitHub como artefactos descargables (`Aseprite-Windows` y `Aseprite-Linux`).
+Compilación automatizada de la última versión estable de Aseprite para Linux, distribuida como AppImage y como template de XBPS para Void Linux; GitHub Actions comprueba actualizaciones diariamente, publica los artefactos en la release `continuous` y actualiza automáticamente la versión, revisión y checksum del paquete, que puede añadirse con `vouru add https://github.com/CrowRei34/uwuprite`, instalarse con `vouru install uwuprite` y actualizarse repitiendo ambos comandos cuando haya una versión nueva.
