@@ -1,8 +1,8 @@
 # Template file for 'uwuprite'
 
 pkgname=uwuprite
-version=1.3.18.3
-revision=32
+version=1.3.18.5
+revision=33
 
 archs="x86_64"
 restricted="Aseprite EULA does not allow redistribution"
@@ -16,7 +16,7 @@ license="custom:Aseprite EULA"
 homepage="https://github.com/CrowRei34/uwuprite"
 
 distfiles="https://github.com/CrowRei34/uwuprite/releases/download/continuous/uwuprite-x86_64.tar.xz"
-checksum=c45c861b65b1d7c905f735435fb05f23d91d9c0b4a4106b63e7eb4d3dfb9f9ef
+checksum=bb2a577b281858f073cbb62243f6df1bf75762e01b49dc1c8b71dcdd67ecad09
 
 do_install() {
 	vbin bin/uwuprite
