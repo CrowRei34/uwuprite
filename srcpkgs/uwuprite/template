@@ -2,7 +2,7 @@
 
 pkgname=uwuprite
 version=1.3.18.5
-revision=42
+revision=43
 
 archs="x86_64"
 restricted="Aseprite EULA does not allow redistribution"
@@ -16,7 +16,7 @@ license="custom:Aseprite EULA"
 homepage="https://github.com/CrowRei34/uwuprite"
 
 distfiles="https://github.com/CrowRei34/uwuprite/releases/download/continuous/uwuprite-x86_64.tar.xz"
-checksum=8ad9d3bf273044ef7358e9040143a0ee5b35e081cccb362de4ca58b7ec4024e0
+checksum=d308e0e3603cbe7c8b7f7eddf30607096c5dc0d15cd3ce41b2a555fe7635e77d
 
 do_install() {
 	vbin bin/uwuprite
